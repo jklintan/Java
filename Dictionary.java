@@ -9,33 +9,29 @@ public class Dictionary {
 	
 	//Constructors
 	Dictionary () {
-//	
-//	outputWriter = new BufferedWriter();
-	
 		theDictionary = new ArrayList<Word>();
-	
 	}
 	
 	Dictionary(String input) {
-		this.addWords(input);
+		theDictionary = new ArrayList<Word>();
+		addWords(input);
 	}
 	
-	
+	//Add words to the dictionary
 	public void addWords(String input) {
-	
 		String[] wordArray = input.split(" ");
-	
 		for (String w : wordArray) {
 			Word wordInstance  = new Word(w);
 			theDictionary.add(wordInstance);
 		}
-	
 	}
 	
+	//Count the number of words in the dictionary
 	public int numberOfWords() {
 		return theDictionary.size();
 	}
 	
+	//Make the dictionary unique
 	public void removeDuplicates() {
 		ArrayList<Word> newList = new ArrayList<Word>();
 		for (Word w : this.theDictionary) {
@@ -46,6 +42,7 @@ public class Dictionary {
 		this.theDictionary = newList;
 	}
 	
+	//Count how many times words has occured in the dictionary
 	public String countOccurences() {
 		int maxCount = 1;
 		int M = 0;
@@ -63,6 +60,7 @@ public class Dictionary {
 		return "There are " + M + " words that occured " + N + " times";
 	}
 	
+	//Sort the dictionary by counts, bubble sort
 	public void sortDictionaryByCounts() {
 		for(int i = 0; i < theDictionary.size(); i++) {	
 			for(int j = 0; j < theDictionary.size()-1; j++) {	
@@ -75,6 +73,7 @@ public class Dictionary {
 		}
 	}
 	
+	//Change the filename
 	public void setFileName(String filename) {
 		try {
 			outputWriter = new BufferedWriter(new FileWriter(filename));
@@ -83,6 +82,7 @@ public class Dictionary {
 		}
 	}
 	
+	//Save the output from toString in a file
 	public void saveFile() {
 //		try {
 //			String toSave = toString();
@@ -92,6 +92,7 @@ public class Dictionary {
 		
 	}
 	
+	//Return a string with info about the dictionary
 	public String toString() {
 		String s = "Total words: " + Integer.toString(numberOfWords()) + " and total occurences ";
 		sortDictionaryByCounts();
