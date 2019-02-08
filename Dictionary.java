@@ -21,8 +21,6 @@ public class Dictionary {
 	}
 	
 	
-	
-	
 	public void addWords(String input) {
 	
 		String[] wordArray = input.split(" ");
@@ -78,9 +76,28 @@ public class Dictionary {
 	}
 	
 	public void setFileName(String filename) {
-//		outputWriter
+		try {
+			outputWriter = new BufferedWriter(new FileWriter(filename));
+		}catch(IOException ierr) {
+			System.out.println("Error");	
+		}
 	}
 	
+	public void saveFile() {
+//		try {
+//			String toSave = toString();
+//		}catch(IOExceptions ierr){
+//			
+//		}
+		
+	}
+	
+	public String toString() {
+		String s = "Total words: " + Integer.toString(numberOfWords()) + " and total occurences ";
+		sortDictionaryByCounts();
+		s += Integer.toString(numberOfWords());
+		return s;
+	}
 
 }
 
