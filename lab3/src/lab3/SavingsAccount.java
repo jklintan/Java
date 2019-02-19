@@ -14,8 +14,10 @@ public class SavingsAccount extends Account {
 	}
 	
 	public double send(double money) {
-		if(money < theBalance) {
+		System.out.println("IM IN THE SEND FUNCT");
+		if(money <= theBalance) {
 			theBalance = theBalance - money;
+			
 		}else {
 			theBalance = 0;
 		}

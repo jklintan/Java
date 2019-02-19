@@ -67,7 +67,7 @@ public class Bank {
 			}else {
 				SavingsAccount newSa = theCust.getCurrentAccount().createSavingsAccount();
 				theAccounts.add(newSa);
-				System.out.println("Savings account created");
+				System.out.println("Added a savings account to the current account : ");
 			}
 			
 		}else {
@@ -104,16 +104,22 @@ public class Bank {
     }
     
 public void transfer(String name, String method, double money) {
-		
+	System.out.println("IM SENDING");
 	if (hasCustomer(name)) {
-
+		System.out.println("IM SENDING");
         if (getCustomer(name).hasCurrentAccount()) {
+        	System.out.println("IM SENDING");
             CurrentAccount currCust = getCustomer(name).getCurrentAccount();
             if (method.equals("save")) {
+            	System.out.println("IM SENDING");
                 if (currCust.hasSavingsAccount()) {
+                	System.out.println("IM SENDING");
                     currCust.send(money);
                 } else {
+                	System.out.println("IM CREATING");
+                	System.out.println(currCust.getCustomer());
                     addSavingsAccount(name);
+                    
                     currCust.send(money);
                 }
 
