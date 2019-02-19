@@ -9,14 +9,11 @@ public class Transaction {
     Transaction(int i, double arg1, double arg2) {
         otherAccount = i;
         money = arg1;
-        balance = arg2 - money;
+        balance = arg2;
     }
 
     public String toString() {
-        System.out.println(otherAccount);
-        System.out.println(money);
-        System.out.println(balance);
 
-        return Integer.toString(otherAccount) + Double.toString(money) + Double.toString(balance);
+        return "Account: " + Integer.toString(otherAccount) + " Transfered money: " + Double.toString(money) + " Balance: " + Double.toString(balance);
     }
 }

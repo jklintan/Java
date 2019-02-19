@@ -67,7 +67,8 @@ public class Bank {
 			}else {
 				SavingsAccount newSa = theCust.getCurrentAccount().createSavingsAccount();
 				theAccounts.add(newSa);
-				System.out.println("Added a savings account to the current account : ");
+				String i  = Integer.toString(theCust.getCurrentAccount().getAccountNumber());
+				System.out.println("Added a savings account to the current account : " + i);
 			}
 			
 		}else {
@@ -104,45 +105,49 @@ public class Bank {
     }
     
 public void transfer(String name, String method, double money) {
-	System.out.println("IM SENDING");
-	if (hasCustomer(name)) {
-		System.out.println("IM SENDING");
-        if (getCustomer(name).hasCurrentAccount()) {
-        	System.out.println("IM SENDING");
-            CurrentAccount currCust = getCustomer(name).getCurrentAccount();
-            if (method.equals("save")) {
-            	System.out.println("IM SENDING");
-                if (currCust.hasSavingsAccount()) {
-                	System.out.println("IM SENDING");
-                    currCust.send(money);
-                } else {
-                	System.out.println("IM CREATING");
-                	System.out.println(currCust.getCustomer());
-                    addSavingsAccount(name);
-                    
-                    currCust.send(money);
-                }
-
-
-            } else if (method.equals("withdraw")) {
-                if (currCust.hasSavingsAccount()) {
-                    currCust.send(money);
-                }
-
-            } else if (method.equals("external")) {
-                // Pengar kommer från main
-                currCust.receive(money);
-
-            } else if (hasCustomer(method)) {
-                if (getCustomer(method).hasCurrentAccount()) {
-                    CurrentAccount currAccPay = getCustomer(name).getCurrentAccount();
-                    int reciever = getCustomer(method).getCurrentAccount().getAccountNumber();
-                    currAccPay.send(reciever, money);
-                }
-            }
-        }
-    }
+	
+	if(hasCustomer(name)) {
+		if(getCustomer(name).hasCurrentAccount()) {
+			CurrentAccount currCust = getCustomer(name).getCurrentAccount();
+			if(method.equals("save"))
+			{	
+				if(currCust.hasSavingsAccount()) {
+					currCust.getSavingsAccount().recieve(money);
+					currCust.theBalance -= money;
+				}else {
+					addSavingsAccount(name);
+					currCust.getSavingsAccount().recieve(money);
+					currCust.theBalance -= money;
+				}
+				
+			}else if (method.equals("withdraw")){
+				//Skicka pengar från savings account till current account
+				if(currCust.hasSavingsAccount()) {
+					//currCust.getSavingsAccount().send(money);
+					double tr = currCust.getSavingsAccount().send(money);
+					currCust.receive(tr);
+					Transaction payment = new Transaction(currCust.getAccountNumber(), money , tr);
+					
+				}					
+				
+			}else if(method.equals("external")) {
+				//Pengar kommer från main
+				currCust.receive(money);	
+				
+			}else if(hasCustomer(method)) {
+				if(getCustomer(method).hasCurrentAccount()) {
+					
+					CurrentAccount currAccOfpayee = getCustomer(name).getCurrentAccount();
+				
+					int recieverAcc = getCustomer(method).getCurrentAccount().getAccountNumber();
+					currAccOfpayee.send(recieverAcc, money);
+					
+				}
+			}
+		
+		}
 	}
+}
     
     public void transactions(String name) {
     	String result = "";

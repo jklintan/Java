@@ -4,7 +4,7 @@ import java.util.*;
 public class CurrentAccount extends Account {
 
     private SavingsAccount theSavingsAccount;
-    private ArrayList<Transaction> theTransactions;
+    public ArrayList<Transaction> theTransactions;
 
     public CurrentAccount(Customer Cust, double Money, Bank bk) {
         super(Cust, Money, bk);
@@ -44,7 +44,7 @@ public class CurrentAccount extends Account {
     }
 
     public void send(double money) {
-    	theBalance = theBalance + money;
+    	theBalance = theBalance - money;
 		Transaction payment = new Transaction(0, money, theBalance );
 		theTransactions.add(payment);
     }
@@ -73,14 +73,36 @@ public class CurrentAccount extends Account {
     }
 
     public void receive(int ID, double sum) {
-        // If ID is 0, then
-        theBalance += sum;
-        if (ID == 0) {
-            receive(sum);
-        } else {
-            Transaction payment = new Transaction(ID, sum, theBalance);
-            theTransactions.add(payment);
-        }
+    	Account receiver = theBank.getAccount(ID);
+		
+		if(receiver == null)
+		{
+			System.out.println("Account no exist");
+		}
+		else
+		{
+			if(receiver instanceof SavingsAccount)
+			{
+				System.out.println("Not a currentaccount");
+			}
+			else
+			{
+				//hur mycket kan man betala
+				double res = Math.min(theBalance, sum);
+				
+				//dra bort från kontot
+				theBalance -= res;
+				
+				//pengarna betalas in på det andra kontot
+				((CurrentAccount)receiver).send(accountNumber, res);
+				
+				res = -res;
+				Transaction payment = new Transaction(ID, res , theBalance);
+				theTransactions.add(payment);
+			}
+			
+			
+		}
     }
 
     public String listTransactions() {
