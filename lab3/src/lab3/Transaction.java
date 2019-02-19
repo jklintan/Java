@@ -11,9 +11,9 @@ public class Transaction {
         money = arg1;
         balance = arg2;
     }
-
+    
     public String toString() {
-
-        return "Account: " + Integer.toString(otherAccount) + " Transfered money: " + Double.toString(money) + " Balance: " + Double.toString(balance);
+        return "Account: " + Integer.toString(otherAccount) + " Transfered money: " 
+        		+ Double.toString(money) + " Balance: " + Double.toString(balance);
     }
 }

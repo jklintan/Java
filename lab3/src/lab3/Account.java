@@ -10,9 +10,10 @@ public class Account {
     public static final double CURRENTACCOUNTFEE = 10.0;
     public static final double SAVINGSINTEREST = 0.01;
 
-    public Account(Customer arg1, double arg2, Bank bk) {
-        theCustomer = arg1;
-        theBalance = arg2;
+    //Constructor
+    public Account(Customer Cust, double balance, Bank bk) {
+        theCustomer = Cust;
+        theBalance = balance;
         availableNumbers = availableNumbers + 1;
         accountNumber = availableNumbers;
         theBank = bk;
@@ -26,6 +27,7 @@ public class Account {
         return theBalance;
     }
 
+    //Set the annual change in value
     public void annualChange() {
 
         if (accountType.equals("current")) {
@@ -35,6 +37,7 @@ public class Account {
         }
     }
 
+    //Print out the accounts corresponding to a specific customer
     public String toString() {
         String result = "\n******************************";
         result = result + "\nAccount number : " + accountNumber;

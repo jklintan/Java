@@ -6,6 +6,7 @@ public class CurrentAccount extends Account {
     private SavingsAccount theSavingsAccount;
     public ArrayList<Transaction> theTransactions;
 
+    //Constructor
     public CurrentAccount(Customer Cust, double Money, Bank bk) {
         super(Cust, Money, bk);
         theBank = bk;
@@ -14,6 +15,7 @@ public class CurrentAccount extends Account {
         theTransactions = new ArrayList<Transaction>();
     }
 
+    //Check if the current customer has a savings account
     public boolean hasSavingsAccount() {
         if (theSavingsAccount == null)
             return false;
@@ -21,6 +23,7 @@ public class CurrentAccount extends Account {
             return true;
     }
 
+    //Create a new savings account for the customer
     public SavingsAccount createSavingsAccount() {
         if (!hasSavingsAccount())
             theSavingsAccount = new SavingsAccount(theCustomer, 0, theBank);
@@ -31,25 +34,29 @@ public class CurrentAccount extends Account {
         return theSavingsAccount;
     }
 
+    //Get the specific customer
     public Customer getCustomer() {
         return theCustomer;
     }
 
+    //Get the bank for the current account
     public Bank getBank() {
         return theBank;
     }
 
+    //Check if the current account has a savings account
     public SavingsAccount getSavingsAccount() {
         return theSavingsAccount;
     }
 
+    //Send money
     public void send(double money) {
     	theBalance = theBalance - money;
 		Transaction payment = new Transaction(0, money, theBalance );
 		theTransactions.add(payment);
     }
 
-    //DONE METHOD
+    //Send money to another account
     public void send(int ID, double money) {
         if(theBank.getAccount(ID) != null){
             if(theBank.getAccount(ID).accountType == "savings"){
@@ -57,7 +64,6 @@ public class CurrentAccount extends Account {
             }
             double res = Math.min(theBalance, money);
             theBalance -= res;
-            //theBank.getAccount(ID).receive(ID, res);
 			res = -res;
 			Transaction payment = new Transaction(ID, res , theBalance);
 			theTransactions.add(payment);
@@ -66,34 +72,34 @@ public class CurrentAccount extends Account {
         }
     }
 
+    //Receive money externally
     public void receive(double money) {
         theBalance = theBalance + money;
         Transaction payment = new Transaction(0, money, theBalance);
         theTransactions.add(payment);
     }
 
+    //Get money transferred to the current account
     public void receive(int ID, double sum) {
     	Account receiver = theBank.getAccount(ID);
-		
 		if(receiver == null)
 		{
-			System.out.println("Account no exist");
+			System.out.println("The account doesn't exist");
 		}
 		else
 		{
 			if(receiver instanceof SavingsAccount)
 			{
-				System.out.println("Not a current account");
+				System.out.println("That is not a current account");
 			}
 			else
 			{
-				//hur mycket kan man betala
 				double res = Math.min(theBalance, sum);
 				
-				//dra bort från kontot
+				//Update the balance at the account
 				theBalance -= res;
 				
-				//pengarna betalas in på det andra kontot
+				//Send money to the receiver
 				((CurrentAccount)receiver).send(accountNumber, res);
 				
 				res = -res;
@@ -105,6 +111,7 @@ public class CurrentAccount extends Account {
 		}
     }
 
+    //List up all the transactions for the current account
     public String listTransactions() {
     	StringBuilder builder = new StringBuilder();
 		builder.append("Transaction summary of the current account " + accountNumber);

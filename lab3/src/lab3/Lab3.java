@@ -41,7 +41,7 @@ public static void main(String[] args) {
 		theBank.transfer("John","withdraw",4000.0);
 		theBank.transfer("John","Matilda",400.0);
 		theBank.transfer("Matilda","John",100.0);
-		theBank.transfer("John","Henry",-400.0);
+		theBank.transfer("John","Henry", -400.0);
 		theBank.transfer("John","save",800.0);
 		
 		theBank.transactions("Henry");

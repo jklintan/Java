@@ -5,11 +5,13 @@ public class Bank {
     private ArrayList<Account> theAccounts;
     private ArrayList<Customer> theCustomers;
 
+    //Constructor
     public Bank() {
         theAccounts = new ArrayList<Account>();
         theCustomers = new ArrayList<Customer>();
     }
 
+    //Check if the bank has customers
     public boolean hasCustomer(String arg) {
         boolean dummy = false;
         for (int i = 0; i < theCustomers.size(); i++) {
@@ -20,6 +22,7 @@ public class Bank {
         return dummy;
     }
 
+    //Add a new customer to the bank
     public void addCustomer(String arg) {
         if (hasCustomer(arg)) {
             System.out.println("The customer already exists.");
@@ -28,14 +31,15 @@ public class Bank {
             System.out.println("Customer added.");
         }
     }
-
-    public void addCurrentAccount(String arg1, double arg2) {
-        if (hasCustomer(arg1)) {
-            Customer dummy = getCustomer(arg1);
+    
+    //Add a current account to a customer 
+    public void addCurrentAccount(String name, double balance) {
+        if (hasCustomer(name)) {
+            Customer dummy = getCustomer(name);
             if (dummy.hasCurrentAccount()) {
                 System.out.println("The customer already has a current account.");
             } else {
-                CurrentAccount newAccount = new CurrentAccount(dummy, arg2, this);
+                CurrentAccount newAccount = new CurrentAccount(dummy, balance, this);
                 theAccounts.add(newAccount);
                 dummy.addCurrentAccount(newAccount);
                 System.out.println("Added a account for " + dummy.getName());
@@ -45,8 +49,9 @@ public class Bank {
         }
     }
 
-    public Customer getCustomer(String arg) {
-        if (!hasCustomer(arg))
+    //Get a customer with specific name
+    public Customer getCustomer(String name) {
+        if (!hasCustomer(name))
             return null;
         else {
             Customer dummy;
@@ -54,11 +59,12 @@ public class Bank {
             do {
                 dummy = theCustomers.get(irun);
                 irun++;
-            } while (!dummy.getName().equals(arg));
+            } while (!dummy.getName().equals(name));
             return dummy;
         }
     }
 
+    //Add a savings account to a customer
     public void addSavingsAccount(String name) {
     	if(hasCustomer(name)) {
 			Customer theCust = getCustomer(name);
@@ -70,12 +76,12 @@ public class Bank {
 				String i  = Integer.toString(theCust.getCurrentAccount().getAccountNumber());
 				System.out.println("Added a savings account to the current account : " + i);
 			}
-			
 		}else {
 			System.out.println("There is no customer with that name");
 		}
     }
 
+    //Get the account with a specific ID
     public Account getAccount(int ID) {
         for (Account account : theAccounts) {
             if (account.getAccountNumber() == ID) {
@@ -92,6 +98,7 @@ public class Bank {
         }
     }
 
+    //Print out the information about the bank
     public String toString() {
         String result = "\nBank information : ";
         double totalValue = 0.0;
@@ -104,60 +111,64 @@ public class Bank {
         return result;
     }
     
-public void transfer(String name, String method, double money) {
-	if(hasCustomer(name)) {
-		if(getCustomer(name).hasCurrentAccount()) {
-			CurrentAccount currCust = getCustomer(name).getCurrentAccount();
-			if(this.getCustomer(name).getCurrentAccount().accountNumber > 0) {
+    //Transfer money between accounts or between customers
+	public void transfer(String name, String method, double money) {
+		if(hasCustomer(name)) {
+			if(getCustomer(name).hasCurrentAccount()) {
+				CurrentAccount currCust = getCustomer(name).getCurrentAccount();
+				if(this.getCustomer(name).getCurrentAccount().accountNumber > 0) {
+					
+					//Send money to savings accountn
+					if(method.equals("save"))
+					{	
+						if(currCust.hasSavingsAccount()) {
+							currCust.getSavingsAccount().recieve(money);
+							currCust.theBalance -= money;
+						}else {
+							addSavingsAccount(name);
+							currCust.getSavingsAccount().recieve(money);
+							currCust.theBalance -= money;
+						}
+					
+					//Send money from saving to current
+					}else if (method.equals("withdraw")){
+						if(currCust.hasSavingsAccount()) {
+							if(money >= currCust.getSavingsAccount().theBalance) {
+								money = currCust.getSavingsAccount().theBalance;
+							}
+							currCust.getSavingsAccount().send(money);
+							currCust.theBalance += money;
+						}					
+						
+					//Recieve money externally
+					}else if(method.equals("external")) {
+						currCust.receive(money);	
+						
+					//Send money between two customers
+					}else if(hasCustomer(method)) {
+	
+						if(getCustomer(method).hasCurrentAccount()) {
+							
+							//CurrCust is the one that gets the transaction
+							CurrentAccount takeFrom = getCustomer(method).getCurrentAccount();
+							
+							//Set up the transaction and send the money
+							Transaction recieve = new Transaction(currCust.accountNumber, money , takeFrom.theBalance + money);
+							takeFrom.theTransactions.add(recieve);
+	
+							currCust.send(takeFrom.getAccountNumber(), money);
+							
+							//Update the balance for the sending account
+							takeFrom.theBalance += money;
+						}
+					}
 				
-				//Skicka pengar till sparkontot
-				if(method.equals("save"))
-				{	
-					if(currCust.hasSavingsAccount()) {
-						currCust.getSavingsAccount().recieve(money);
-						currCust.theBalance -= money;
-					}else {
-						addSavingsAccount(name);
-						currCust.getSavingsAccount().recieve(money);
-						currCust.theBalance -= money;
-					}
-					
-				}else if (method.equals("withdraw")){
-					//Skicka pengar från savings account till current account
-					if(currCust.hasSavingsAccount()) {
-						currCust.getSavingsAccount().send(money);
-					}					
-					
-				}else if(method.equals("external")) {
-					//Pengar kommer från main
-					currCust.receive(money);	
-					
-				}else if(hasCustomer(method)) {
-					System.out.println("There is a customer named " + method);
-					if(getCustomer(method).hasCurrentAccount()) {
-						
-						
-						System.out.println("Transfer money between");
-						System.out.println(currCust.accountNumber);
-						
-						CurrentAccount currAccOfpayee = getCustomer(name).getCurrentAccount();
-					
-						int recieverAcc = getCustomer(method).getCurrentAccount().getAccountNumber();
-						currAccOfpayee.send(recieverAcc, money);
-						System.out.println(recieverAcc);
-						Transaction payment = new Transaction(recieverAcc, money , getCustomer(method).getCurrentAccount().theBalance);
-						Transaction recieve = new Transaction(currCust.accountNumber, -money , getCustomer(method).getCurrentAccount().theBalance);
-						//currCust.theTransactions.add(recieve);
-						getCustomer(method).getCurrentAccount().theTransactions.add(payment);
-						
-					}
 				}
-			
 			}
 		}
 	}
-}
     
+	//Print out the transactions done at a given account
     public void transactions(String name) {
     	String result = "";
 		if(getCustomer(name).hasCurrentAccount()) {
