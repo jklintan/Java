@@ -83,7 +83,7 @@ public class CurrentAccount extends Account {
 		{
 			if(receiver instanceof SavingsAccount)
 			{
-				System.out.println("Not a currentaccount");
+				System.out.println("Not a current account");
 			}
 			else
 			{

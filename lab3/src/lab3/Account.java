@@ -41,7 +41,8 @@ public class Account {
         result = result + "\nCustomer : " + theCustomer.getName();
         result = result + "\nBalance : " + theBalance;
         result = result + "\n******************************";
-        if(!(theCustomer.getCurrentAccount().accountType.matches("Savings")) && (theCustomer.getCurrentAccount().hasSavingsAccount())) {
+        String s = accountType;
+        if( s.matches("current") && (theCustomer.getCurrentAccount().hasSavingsAccount())) {
         	result = result + "\nSavings Account";
             result = result + "\nAccount number : " + theCustomer.getCurrentAccount().getSavingsAccount().getAccountNumber();
             result = result + "\nBalance : " + theCustomer.getCurrentAccount().getSavingsAccount().getBalance();
