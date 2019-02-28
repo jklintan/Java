@@ -59,7 +59,7 @@ public class PhoneBook {
 			if (number == listOfNumbers.get(i).getPhoneNumber()) {
 				added = false;
 			}
-			if(temp.length == 2) {
+			if(temp.length != 2) {
 				added = false;
 			}
 		}
@@ -93,7 +93,7 @@ public class PhoneBook {
 			FileWriter fw = new FileWriter(f, false);
 			
 			for(int i = 0; i < listOfNumbers.size(); i++) {
-				fw.write(String.format("%20s%5s", listOfNumbers.get(i).getFullName() + " ", String.valueOf(listOfNumbers.get(i).getPhoneNumber())));
+				fw.write(String.format("%20s%5s", listOfNumbers.get(i).getFullName() + " ", String.valueOf(listOfNumbers.get(i).getPhoneNumber() + "\n")));
 			}
 
 			fw.close();

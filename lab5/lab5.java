@@ -10,16 +10,15 @@ public class lab5 {
 //		PhoneBook myPhoneBook = new PhoneBook();
 //		System.out.println(myPhoneBook.load("PhoneList.txt"));
 //		
-//		myPhoneBook.search("Roberts");
-//		
-//		myPhoneBook.search("10003");
-//		myPhoneBook.deletePerson("Roberts", 10003);
-//		myPhoneBook.search("10003");
-//		myPhoneBook.deletePerson("Roberts", 10003);
-//		myPhoneBook.search("Roberts");
-//		myPhoneBook.addPerson("Mark Dieckmann", 10999);
-//		myPhoneBook.search("Dieckmann");
-//		myPhoneBook.save("result.txt");
+//		System.out.println(myPhoneBook.search("Roberts"));
+//		System.out.println(myPhoneBook.search("10003"));
+//		System.out.println(myPhoneBook.deletePerson("Roberts", 10003));
+//		System.out.println(myPhoneBook.search("10003"));
+//		System.out.println(myPhoneBook.deletePerson("Roberts", 10003));
+//		System.out.println(myPhoneBook.search("Roberts"));
+//		System.out.println(myPhoneBook.addPerson("Mark Dieckmann", 10999));
+//		System.out.println(myPhoneBook.search("Dieckmann"));
+//		System.out.println(myPhoneBook.save("result.txt"));
 	}
 
 }
