@@ -89,9 +89,11 @@ public class PhoneBook {
 		if(f.exists()) {
 			System.out.println("File exists");
 		}
+		if(theFile.equals("")) {
+			System.out.println("Provide file name");
+		}
 		try {
-			FileWriter fw = new FileWriter(f, false);
-			
+			FileWriter fw = new FileWriter(f, false);	
 			for(int i = 0; i < listOfNumbers.size(); i++) {
 				fw.write(String.format("%20s%5s", listOfNumbers.get(i).getFullName() + " ", String.valueOf(listOfNumbers.get(i).getPhoneNumber() + "\n")));
 			}

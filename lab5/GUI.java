@@ -6,7 +6,7 @@ import java.util.*;
 
 public class GUI extends JFrame implements ActionListener{
 	
-	JButton load_B, save_B, search_B, next_B, add_B, delete_B;
+	JButton loadButton, saveButton, searchButton, nextButton, addButton, deleteButton;
 	JTextField searchField, nameField, numberField; 
 	PhoneBook myPhoneBook = new PhoneBook();
 	int counter = 0;
@@ -17,32 +17,82 @@ public class GUI extends JFrame implements ActionListener{
 		Font myFont = new Font("SansSerif", Font.PLAIN, 20);
 		setTitle("Interactive phone book");
 		
-		 load_B = new JButton("Load phone book"); load_B.setFont(myFont); load_B.addActionListener(this);
-		 save_B = new JButton("Save phone book"); save_B.setFont(myFont); save_B.addActionListener(this);
-		 search_B = new JButton("Search"); search_B.setFont(myFont); search_B.addActionListener(this);
-		 next_B = new JButton("Next name"); next_B.setFont(myFont); next_B.addActionListener(this);
-		 add_B = new JButton("Add person"); add_B.setFont(myFont); add_B.addActionListener(this);
-		 delete_B = new JButton("Delete person"); delete_B.setFont(myFont); delete_B.addActionListener(this);
+		//Load button
+		loadButton = new JButton("Load phone book"); 
+		loadButton.setFont(myFont); 
+		loadButton.addActionListener(this);
+		loadButton.setEnabled(true);
 		
-		 searchField = new JTextField(); searchField.setEditable(true); searchField.setFont(myFont);searchField.addActionListener(this);
-		 nameField = new JTextField(); nameField.setEditable(false); nameField.setFont(myFont);
-		 numberField = new JTextField(); numberField.setEditable(false);numberField.setFont(myFont);
+		//Save button
+		saveButton = new JButton("Save phone book"); 
+		saveButton.setFont(myFont); 
+		saveButton.addActionListener(this);
+		saveButton.setEnabled(true);
+		
+		//Search button
+		searchButton = new JButton("Search"); 
+		searchButton.setFont(myFont); 
+		searchButton.addActionListener(this);
+		searchButton.setEnabled(true);
+		
+		//Next button, only added if we have more than one search result
+		nextButton = new JButton("Next name"); 
+		nextButton.setFont(myFont); 
+		nextButton.addActionListener(this);
+		nextButton.setEnabled(false);
+		
+		//Add button, add a person to PhoneBook
+		addButton = new JButton("Add person"); 
+		addButton.setFont(myFont); 
+		addButton.addActionListener(this);
+		addButton.setEnabled(true);
+		
+		//Delete a person from the PhoneBook
+		deleteButton = new JButton("Delete person"); 
+		deleteButton.setFont(myFont); 
+		deleteButton.addActionListener(this);
+		deleteButton.setEnabled(true);
+		
+		//Setup the search field
+		searchField = new JTextField(); 
+		searchField.setEditable(true); 
+		searchField.setFont(myFont);
+		searchField.addActionListener(this);
+		
+		//Name field, also textfield
+		nameField = new JTextField(); 
+		nameField.setEditable(false); 
+		nameField.setFont(myFont);
+		
+		//Number field, also textfield
+		numberField = new JTextField(); 
+		numberField.setEditable(false);
+		numberField.setFont(myFont);
 		 
-		 
-		load_B.setEnabled(true); save_B.setEnabled(true); search_B.setEnabled(true); next_B.setEnabled(false); add_B.setEnabled(true); delete_B.setEnabled(true);
+		//Set the layout for the GUI
 		Container c = getContentPane();
 		c.setLayout(new GridLayout(3,3));
-		c.add(load_B); c.add(save_B); c.add(searchField); c.add(search_B); c.add(next_B); c.add(nameField); c.add(add_B); c.add(delete_B); c.add(numberField);
+		//Add the buttons to the contentpane
+		c.add(loadButton); 
+		c.add(saveButton); 
+		c.add(searchField); 
+		c.add(searchButton); 
+		c.add(nextButton); 
+		c.add(nameField); 
+		c.add(addButton); 
+		c.add(deleteButton); 
+		c.add(numberField);
 		pack();
 		
-		setVisible(true); setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setVisible(true); 
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		
 	}
 	
+	//Handles if a button is pressed
 	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getSource() == load_B) {
+		if(e.getSource() == loadButton) {
 			String myText = (searchField.getText());
 			searchField.setText("");			
 			nameField.setText(myPhoneBook.load(myText));
@@ -52,10 +102,10 @@ public class GUI extends JFrame implements ActionListener{
 			searchField.setText("");			
 			nameField.setText(myPhoneBook.load(myText));
 		}
-		if(e.getSource() == search_B) {
-            System.out.println("Clicked");
+		if(e.getSource() == searchButton) {
+            //System.out.println("Clicked");
             String myText = (searchField.getText());
-            System.out.println(myText);
+            //System.out.println(myText);
 			searchField.setText("");	
 			foundPersons = myPhoneBook.search(myText);
 			
@@ -66,7 +116,7 @@ public class GUI extends JFrame implements ActionListener{
 				numberField.setText(Integer.toString(foundPersons.get(0).getPhoneNumber()));
 			}
 			else {
-				next_B.setEnabled(true);
+				nextButton.setEnabled(true);
 				
 				
 				nameField.setText(foundPersons.get(counter).getFullName());
@@ -77,7 +127,7 @@ public class GUI extends JFrame implements ActionListener{
 				counter = 0;
 			}
 		
-		if(e.getSource() == next_B) {
+		if(e.getSource() == nextButton) {
 				counter++; 	
 				nameField.setText(foundPersons.get(counter).getFullName());
 				numberField.setText(Integer.toString(foundPersons.get(counter).getPhoneNumber()));
@@ -86,10 +136,10 @@ public class GUI extends JFrame implements ActionListener{
 						nameField.setText(foundPersons.get(counter).getFullName());
 						numberField.setText(Integer.toString(foundPersons.get(counter).getPhoneNumber()));
 						counter = 0;
-						next_B.setEnabled(false);		
+						nextButton.setEnabled(false);		
 					}
 			}				
-		if(e.getSource() == delete_B) {
+		if(e.getSource() == deleteButton) {
 			if(foundPersons != null) {
 				searchField.setText(myPhoneBook.deletePerson(nameField.getText(), Integer.valueOf(numberField.getText())));
 				
@@ -98,19 +148,19 @@ public class GUI extends JFrame implements ActionListener{
 			}
 			
 		}
-		if (e.getSource() == add_B) {
+		if (e.getSource() == addButton) {
             String myText = (searchField.getText());
             String[] arr = myText.split(" ");
             if (arr.length == 3) {
-            	System.out.println(arr[0] + " " + arr[1]);
-                System.out.println(Integer.parseInt(arr[2]));
-                System.out.println(myPhoneBook.addPerson(arr[0] + " " + arr[1], Integer.parseInt(arr[2])));
+//            	System.out.println(arr[0] + " " + arr[1]);
+//                System.out.println(Integer.parseInt(arr[2]));
+                myPhoneBook.addPerson(arr[0] + " " + arr[1], Integer.parseInt(arr[2]));
                 searchField.setText("");
             } else {
                 nameField.setText("Incorrect format");
             }
         }
-		if(e.getSource() == save_B) {
+		if(e.getSource() == saveButton) {
 			String myText = (searchField.getText());
 		
 			if(myText.isEmpty()) {
